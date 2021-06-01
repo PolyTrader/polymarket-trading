@@ -1,9 +1,14 @@
 import argparse
+import logging
 
 from web3 import Web3
 
 from .utils import initialize_identity
 from .buy import buy
+
+
+logger = logging.getLogger(__name__)
+
 
 def main():
     parser = argparse.ArgumentParser(prog="pm-trade")
@@ -18,10 +23,15 @@ def main():
     sell_parser = sub_parser.add_parser('sell', help='Sell Shares (Not Implemented)')
 
     args = parser.parse_args()
-    market = args.m
-    amount = args.a
-    index = args.i
-    minimum_shares = args.n
+
+    try:
+        market = args.m
+        amount = args.a
+        index = args.i
+        minimum_shares = args.n
+    except AttributeError as e:
+        logger.error(e)
+        exit()
 
     w3 = initialize_identity()
     trx_hash = buy(w3, market, amount, index, minimum_shares)

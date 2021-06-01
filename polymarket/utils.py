@@ -1,3 +1,4 @@
+from functools import lru_cache
 import os
 import json
 
@@ -8,17 +9,19 @@ from web3.middleware import geth_poa_middleware, construct_sign_and_send_raw_mid
 import importlib_resources as resources
 
 
-# Load the ABI at start-up
-erc20_abi = json.loads(resources.read_text('polymarket.abi', 'ERC20.json'))
+@lru_cache(maxsize=16)
+def load_evm_abi(abi):
+    return json.loads(resources.read_text('polymarket.abi', abi))
 
 
 def approve_erc20(w3, token_address, spender, amount):
+    erc20_abi = load_evm_abi('ERC20.json')
     instance = w3.eth.contract(address=token_address, abi=erc20_abi)
     decimals = instance.functions.decimals().call()
 
-    raw_amount = int(float(amount) * (10 ** decimals))
-    instance.functions.approve(_spender=spender, _value=int(raw_amount)).transact()
-    return raw_amount
+    raw_amount = int(float(amount) * (10 ** decimals)) + 1
+    instance.functions.approve(_spender=spender, _value=raw_amount).transact()
+    return raw_amount - 1
 
 
 def initialize_identity():
