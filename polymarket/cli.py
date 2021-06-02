@@ -5,6 +5,7 @@ from web3 import Web3
 
 from .utils import initialize_identity
 from .buy import buy
+from .sell import sell
 
 
 logger = logging.getLogger(__name__)
@@ -12,15 +13,19 @@ logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(prog="pm-trade")
-    sub_parser = parser.add_subparsers()
+    sub_parser = parser.add_subparsers(dest='subparser_name')
 
-    parser_buy = sub_parser.add_parser('buy', help='Buy Shares')
-    parser_buy.add_argument('-m', help="Market Maker Address", required=True)
-    parser_buy.add_argument('-a', help="Amount to spend (USDC)", required=True)
-    parser_buy.add_argument('-i', help="Index of outcome choice", required=True)
-    parser_buy.add_argument('-n', help="Minimum number of shares expected (slippage)", required=True)
+    buy_parser = sub_parser.add_parser('buy', help='Buy Shares')
+    buy_parser.add_argument('-m', help="Market Maker Address", required=True)
+    buy_parser.add_argument('-a', help="Amount to spend (USDC)", required=True)
+    buy_parser.add_argument('-i', help="Index of outcome choice", required=True)
+    buy_parser.add_argument('-n', help="Minimum number of shares expected (slippage)", required=True)
 
     sell_parser = sub_parser.add_parser('sell', help='Sell Shares (Not Implemented)')
+    sell_parser.add_argument('-m', help="Market Maker Address", required=True)
+    sell_parser.add_argument('-a', help="Amount to recover (USDC)", required=True)
+    sell_parser.add_argument('-i', help="Index of outcome choice", required=True)
+    sell_parser.add_argument('-n', help="Maximum number of shares expected (slippage)", required=True)
 
     args = parser.parse_args()
 
@@ -28,13 +33,17 @@ def main():
         market = args.m
         amount = args.a
         index = args.i
-        minimum_shares = args.n
+        slip_shares = args.n
     except AttributeError as e:
         logger.error(e)
         exit()
 
     w3 = initialize_identity()
-    trx_hash = buy(w3, market, amount, index, minimum_shares)
+    if args.subparser_name == 'buy':
+        trx_hash = buy(w3, market, amount, index, slip_shares)
+
+    elif args.subparser_name == 'sell':
+        trx_hash = sell(w3, market, amount, index, slip_shares)
 
     print(Web3.toHex(trx_hash))
 
