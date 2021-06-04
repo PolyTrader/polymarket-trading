@@ -1,10 +1,6 @@
 from json import loads
 import importlib_resources as resources
 
-from web3 import Web3
-from web3.gas_strategies import rpc
-from web3.middleware import geth_poa_middleware, construct_sign_and_send_raw_middleware
-
 from .utils import approve_erc20, load_evm_abi
 
 
