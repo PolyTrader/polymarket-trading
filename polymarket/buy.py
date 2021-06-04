@@ -7,7 +7,7 @@ def buy(web3_provider, market_maker_address, amount, index, minimum_shares):
     approved_amount = approve_erc20(web3_provider, market_maker_address, amount)
 
     # Adjust share number to the raw value used by the buy contract
-    fixed_minimum_shares = int(float(minimum_shares) * (10**6))
+    fixed_minimum_shares = int(minimum_shares * (10**6))
 
     contract = web3_provider.eth.contract(address=market_maker_address, abi=fixed_product_market_maker_address_abi)
-    return contract.functions.buy(approved_amount, int(index), int(fixed_minimum_shares)).transact()
+    return contract.functions.buy(approved_amount, index, fixed_minimum_shares).transact()

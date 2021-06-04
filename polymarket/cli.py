@@ -18,15 +18,15 @@ def main():
 
     buy_parser = sub_parser.add_parser('buy', help='Buy Shares')
     buy_parser.add_argument('-m', help="Market Maker Address", required=True)
-    buy_parser.add_argument('-a', help="Amount to spend (USDC)", required=True)
-    buy_parser.add_argument('-i', help="Index of outcome choice", required=True)
-    buy_parser.add_argument('-n', help="Minimum number of shares expected (slippage)", required=True)
+    buy_parser.add_argument('-a', help="Amount to spend (USDC)", type=float, required=True)
+    buy_parser.add_argument('-i', help="Index of outcome choice", type=int, required=True)
+    buy_parser.add_argument('-n', help="Minimum number of shares expected (slippage)", type=float, required=True)
 
     sell_parser = sub_parser.add_parser('sell', help='Sell Shares')
     sell_parser.add_argument('-m', help="Market Maker Address", required=True)
-    sell_parser.add_argument('-a', help="Amount to recover (USDC)", required=True)
-    sell_parser.add_argument('-i', help="Index of outcome choice", required=True)
-    sell_parser.add_argument('-n', help="Maximum number of shares expected (slippage)", required=True)
+    sell_parser.add_argument('-a', help="Amount to recover (USDC)", type=float, required=True)
+    sell_parser.add_argument('-i', help="Index of outcome choice", type=int, required=True)
+    sell_parser.add_argument('-n', help="Maximum number of shares expected (slippage)", type=float, required=True)
 
     redeem_parser = sub_parser.add_parser('redeem', help='Redeem Shares')
     redeem_parser.add_argument('-c', help='Condition ID to redeem', required=True)
