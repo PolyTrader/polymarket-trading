@@ -1,7 +1,4 @@
-from json import loads
-import importlib_resources as resources
-
-from .utils import approve_erc20, load_evm_abi, conditional_token_address, usdc_address
+from .utils import conditional_token_address, load_evm_abi, usdc_address
 
 hash_zero = "0x0000000000000000000000000000000000000000000000000000000000000000"
 

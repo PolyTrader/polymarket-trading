@@ -1,0 +1,4 @@
+[flake8]
+exclude = .git,__pycache__,docs/source/conf.py,old,build,dist,env
+max-line-length = 120
+import-order-style=smarkets
