@@ -3,10 +3,10 @@ import logging
 
 from web3 import Web3
 
-from .utils import initialize_identity
 from .buy import buy
-from .sell import sell
 from .redeem import redeem
+from .sell import sell
+from .utils import initialize_identity
 
 
 logger = logging.getLogger(__name__)
@@ -63,4 +63,3 @@ def main():
         trx_hash = redeem(w3, condition_id, num_outcomes)
 
     print(Web3.toHex(trx_hash))
-
