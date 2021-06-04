@@ -6,6 +6,7 @@ from web3 import Web3
 from .buy import buy
 from .redeem import redeem
 from .sell import sell
+from .split import split
 from .utils import initialize_identity
 
 
@@ -32,6 +33,11 @@ def main():
     redeem_parser.add_argument('-c', help='Condition ID to redeem', required=True)
     redeem_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
 
+    redeem_parser = sub_parser.add_parser('split', help='Redeem Shares')
+    redeem_parser.add_argument('-c', help='Condition ID to redeem', required=True)
+    redeem_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
+    redeem_parser.add_argument('-a', help='Amount of collateral to split', type=float, required=True)
+
     args = parser.parse_args()
 
     if args.subparser_name in ['buy', 'sell']:
@@ -44,10 +50,11 @@ def main():
             logger.error(e)
             exit()
 
-    elif args.subparser_name in ['redeem']:
+    elif args.subparser_name in ['redeem', 'split']:
         try:
             condition_id = args.c
             num_outcomes = args.n
+            amount = getattr(args, 'a', None)
         except AttributeError as e:
             logger.error(e)
             exit()
@@ -61,5 +68,8 @@ def main():
 
     elif args.subparser_name == 'redeem':
         trx_hash = redeem(w3, condition_id, num_outcomes)
+
+    elif args.subparser_name == 'split':
+        trx_hash = split(w3, condition_id, num_outcomes, amount)
 
     print(Web3.toHex(trx_hash))
