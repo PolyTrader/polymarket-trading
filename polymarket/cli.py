@@ -4,6 +4,7 @@ import logging
 from web3 import Web3
 
 from .buy import buy
+from .merge import merge
 from .redeem import redeem
 from .sell import sell
 from .split import split
@@ -33,10 +34,15 @@ def main():
     redeem_parser.add_argument('-c', help='Condition ID to redeem', required=True)
     redeem_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
 
-    redeem_parser = sub_parser.add_parser('split', help='Redeem Shares')
+    redeem_parser = sub_parser.add_parser('split', help='Split Shares')
     redeem_parser.add_argument('-c', help='Condition ID to redeem', required=True)
     redeem_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
     redeem_parser.add_argument('-a', help='Amount of collateral to split', type=float, required=True)
+
+    redeem_parser = sub_parser.add_parser('merge', help='Merge Shares')
+    redeem_parser.add_argument('-c', help='Condition ID to redeem', required=True)
+    redeem_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
+    redeem_parser.add_argument('-a', help='Amount of collateral to merge', type=float, required=True)
 
     args = parser.parse_args()
 
@@ -50,7 +56,7 @@ def main():
             logger.error(e)
             exit()
 
-    elif args.subparser_name in ['redeem', 'split']:
+    elif args.subparser_name in ['redeem', 'split', 'merge']:
         try:
             condition_id = args.c
             num_outcomes = args.n
@@ -71,5 +77,8 @@ def main():
 
     elif args.subparser_name == 'split':
         trx_hash = split(w3, condition_id, num_outcomes, amount)
+
+    elif args.subparser_name == 'merge':
+        trx_hash = merge(w3, condition_id, num_outcomes, amount)
 
     print(Web3.toHex(trx_hash))
