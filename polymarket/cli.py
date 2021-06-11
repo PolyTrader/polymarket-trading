@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 def main():
     parser = argparse.ArgumentParser(prog="pm-trade")
+    parser.add_argument('-g', help='User supplied gas price (in gwei)', type=int)
     sub_parser = parser.add_subparsers(dest='subparser_name')
 
     buy_parser = sub_parser.add_parser('buy', help='Buy Shares')
@@ -65,7 +66,9 @@ def main():
             logger.error(e)
             exit()
 
-    w3 = initialize_identity()
+    gas_price = getattr(args, 'g', None)
+    w3 = initialize_identity(gas_price)
+
     if args.subparser_name == 'buy':
         trx_hash = buy(w3, market, amount, index, slip_shares)
 

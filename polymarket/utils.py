@@ -45,7 +45,10 @@ def conditional_token_is_approved_for_all(w3, owner, operator):
     return instance.functions.isApprovedForAll(owner, operator).call()
 
 
-def initialize_identity():
+def initialize_identity(gas_price=None):
+    def user_supplied_gas_price(_, trx_params=None):
+        return Web3.toWei(gas_price, 'gwei')
+
     private_key = os.getenv('POLYGON_PRIVATE_KEY')
     if not private_key:
         raise RuntimeError('POLYGON_PRIVATE_KEY Environment Variable Not Found')
@@ -60,6 +63,10 @@ def initialize_identity():
     w3.eth.default_account = acct.address
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)
     w3.middleware_onion.add(construct_sign_and_send_raw_middleware(acct))
-    w3.eth.set_gas_price_strategy(rpc.rpc_gas_price_strategy)
+
+    if gas_price:
+        w3.eth.set_gas_price_strategy(user_supplied_gas_price)
+    else:
+        w3.eth.set_gas_price_strategy(rpc.rpc_gas_price_strategy)
 
     return w3
