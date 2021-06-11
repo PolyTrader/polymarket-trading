@@ -11,6 +11,7 @@ from web3.middleware import construct_sign_and_send_raw_middleware, geth_poa_mid
 conditional_token_address = '0x4D97DCd97eC945f40cF65F87097ACe5EA0476045'
 usdc_address = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
 
+
 @lru_cache(maxsize=16)
 def load_evm_abi(abi):
     return json.loads(resources.read_text('polymarket.abi', abi))
