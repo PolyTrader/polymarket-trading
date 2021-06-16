@@ -1,3 +1,5 @@
 web3
 importlib_resources
 eth_account
+requests
+gql

@@ -1,0 +1,16 @@
+query my_positions ($user: String) {
+  marketPositions (where: {user: $user}) {
+    id
+    market {
+      id
+    }
+    outcomeIndex
+    quantityBought
+    quantitySold
+    netQuantity
+    valueBought
+    valueSold
+    netValue
+    feesPaid
+  }
+}
