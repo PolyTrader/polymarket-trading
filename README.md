@@ -9,10 +9,12 @@ Simple cli tool for trading on PolyMarket
  - Run `pm-trade -h` to display help
 
 ### Trading Setup
- - matic chain wallet
- - matic api end point  
- - env variables
- - blah blah blah
+ - Create a new wallet on the matic chain
+ - Create your matic endpoint on https://rpc.maticvigil.com/
+ - Set env variables
+   - POLYGON_PRIVATE_KEY
+   - MATIC_VIGIL_RPC_KEY
+ - Fund your trading wallet with matic and usdc
 
 #### Made some money from this tool and want to contribute? Donate to these charities.
 * [Planned Parenthood](https://www.weareplannedparenthood.org/onlineactions/2U7UN1iNhESWUfDs4gDPNg2)
