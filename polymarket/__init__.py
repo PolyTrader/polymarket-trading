@@ -6,5 +6,5 @@ from .sell import sell
 from .utils import initialize_identity, load_evm_abi
 
 
-__all__ = ['abi', 'buy', 'sell', 'split', 'redeem', 'utils', 'initialize_identity', 'load_evm_abi', 'get_positions',\
+__all__ = ['abi', 'buy', 'sell', 'split', 'redeem', 'utils', 'initialize_identity', 'load_evm_abi', 'get_positions',
            'list_positions', 'get_active_markets']

@@ -1,5 +1,4 @@
 import importlib_resources as resources
-
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
@@ -24,6 +23,10 @@ def list_positions(user):
 
     positions = {}
     for pos in mkt_pos['marketPositions']:
+        # If you don't currently own any shares in this position, don't list it.
+        if pos['netQuantity'] == '0':
+            continue
+
         mkt_id = pos['market']['id']
         if not positions.get(mkt_id):
             positions[mkt_id] = {}
@@ -36,15 +39,21 @@ def list_positions(user):
 
         outcome_label = mkts[mkt_id]['outcomes'][int(pos['outcomeIndex'])]
         outcome_price = mkts[mkt_id]['outcomePrices'][int(pos['outcomeIndex'])]
-        positions[mkt_id]['positions'][int(pos['outcomeIndex'])] = (outcome_label, pos['netQuantity'], outcome_price)
+        positions[mkt_id]['positions'][int(pos['outcomeIndex'])] = (outcome_label, pos['netQuantity'], outcome_price,
+                                                                    pos['netValue'])
 
-    for k, v in positions.items():
+    print("-"*80)
+    print("Question")
+    print("    position / number shares / share price / position value ")
+    for _, v in positions.items():
+        print("-" * 80)
         print(v['question'])
 
         for z in v['positions']:
             if z is not None:
-                print(f"  {z[0]} - {z[1]} - {z[2]}")
+                position_name = z[0]
+                num_shares = int(z[1])/10**6
+                share_price = float(z[2])
+                position_value = int(z[3])/10**6
 
-
-
-
+                print(f"    {position_name} / {num_shares:.6f} / {share_price:.4f} / ${position_value:.4f}")
