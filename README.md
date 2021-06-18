@@ -8,6 +8,12 @@ Simple cli tool for trading on PolyMarket
  - Run `pip install polymarket-tools`
  - Run `pm-trade -h` to display help
 
+### Trading Setup
+ - matic chain wallet
+ - matic api end point  
+ - env variables
+ - blah blah blah
+
 #### Made some money from this tool and want to contribute? Donate to these charities.
 * [Planned Parenthood](https://www.weareplannedparenthood.org/onlineactions/2U7UN1iNhESWUfDs4gDPNg2)
 * [Fair Fight](https://secure.actblue.com/donate/fair-fight-action--inc--1)
