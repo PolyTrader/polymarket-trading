@@ -5,6 +5,7 @@ from web3 import Web3
 
 from .buy import buy
 from .merge import merge
+from .positions import list_positions
 from .redeem import redeem
 from .sell import sell
 from .split import split
@@ -45,6 +46,8 @@ def main():
     redeem_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
     redeem_parser.add_argument('-a', help='Amount of collateral to merge', type=float, required=True)
 
+    redeem_parser = sub_parser.add_parser('positions', help='List Open Positions')
+
     args = parser.parse_args()
 
     if args.subparser_name in ['buy', 'sell']:
@@ -84,4 +87,9 @@ def main():
     elif args.subparser_name == 'merge':
         trx_hash = merge(w3, condition_id, num_outcomes, amount)
 
-    print(Web3.toHex(trx_hash))
+    elif args.subparser_name == 'positions':
+        list_positions(w3.eth.default_account)
+        trx_hash = None
+
+    if trx_hash:
+        print(Web3.toHex(trx_hash))
