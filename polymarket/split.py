@@ -10,5 +10,7 @@ def split(web3_provider, condition_id, num_outcomes, amount):
     approved_amount = approve_erc20(web3_provider, conditional_token_address, amount)
 
     contract = web3_provider.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
-    return contract.functions.splitPosition(usdc_address, hash_zero, condition_id, index_set, approved_amount)\
+    trx_hash = contract.functions.splitPosition(usdc_address, hash_zero, condition_id, index_set, approved_amount)\
         .transact()
+    web3_provider.eth.wait_for_transaction_receipt(trx_hash)
+    return trx_hash

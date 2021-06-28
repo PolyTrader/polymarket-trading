@@ -9,7 +9,6 @@ def get_positions(user):
     gql_uri = "https://api.thegraph.com/subgraphs/name/tokenunion/polymarket-matic"
     transport = RequestsHTTPTransport(gql_uri)
     client = Client(transport=transport, fetch_schema_from_transport=True)
-
     query = gql(resources.read_text('polymarket.gql', 'positions.gql'))
 
     return client.execute(query, {"user": user.lower()})

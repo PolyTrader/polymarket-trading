@@ -25,7 +25,7 @@ def approve_erc20(w3, spender, amount):
     decimals = instance.functions.decimals().call()
 
     raw_amount = int(float(amount) * (10 ** decimals)) + 1
-    instance.functions.approve(_spender=spender, _value=raw_amount).transact()
+    w3.eth.wait_for_transaction_receipt(instance.functions.approve(_spender=spender, _value=raw_amount).transact())
     return raw_amount - 1
 
 
@@ -34,7 +34,9 @@ def conditional_token_approve_for_all(w3, fixed_product_market_maker_address, st
 
     conditional_token_abi = load_evm_abi('ConditionalTokens.json')
     instance = w3.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
-    return instance.functions.setApprovalForAll(fixed_product_market_maker_address, status).transact()
+    receipt = w3.eth.wait_for_transaction_receipt(
+        instance.functions.setApprovalForAll(fixed_product_market_maker_address, status).transact())
+    return receipt['transactionIndex']
 
 
 def conditional_token_is_approved_for_all(w3, owner, operator):
