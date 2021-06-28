@@ -10,5 +10,7 @@ def merge(web3_provider, condition_id, num_outcomes, amount):
     fixed_amount = int(amount * (10 ** 6))
 
     contract = web3_provider.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
-    return contract.functions.mergePositions(usdc_address, hash_zero, condition_id, index_set, fixed_amount)\
+    trx_hash = contract.functions.mergePositions(usdc_address, hash_zero, condition_id, index_set, fixed_amount)\
         .transact()
+    web3_provider.eth.wait_for_transaction_receipt(trx_hash)
+    return trx_hash
