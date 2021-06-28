@@ -8,7 +8,6 @@ def sell(web3_provider, market_maker_address, return_amount, index, maximum_shar
     fixed_maximum_shares = int(maximum_shares * (10**6))
 
     conditional_token_approve_for_all(web3_provider, market_maker_address, True)
-
     contract = web3_provider.eth.contract(address=market_maker_address, abi=fixed_product_market_maker_address_abi)
     trx_hash = contract.functions.sell(fixed_return_amount, index, fixed_maximum_shares).transact()
     web3_provider.eth.wait_for_transaction_receipt(trx_hash)
