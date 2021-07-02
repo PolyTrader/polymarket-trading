@@ -55,12 +55,18 @@ def initialize_identity(gas_price=None):
     if not private_key:
         raise RuntimeError('POLYGON_PRIVATE_KEY Environment Variable Not Found')
 
-    vigil_key = os.getenv('MATIC_VIGIL_RPC_KEY')
-    if not vigil_key:
-        raise RuntimeError('MATIC_VIGIL_RPC_KEY Environment Variable Not Found')
+    rpc_uri = os.getenv('RPC_URI')
+
+    vigil_key = None
+    if not rpc_uri:
+        vigil_key = os.getenv('MATIC_VIGIL_RPC_KEY')
+        rpc_uri = f'https://rpc-mainnet.maticvigil.com/v1/{vigil_key}'
+
+    if not vigil_key and not rpc_uri:
+        raise RuntimeError('Must include either RPC_URI or MATIC_VIGIL_RPC_KEY environment variable')
 
     acct = Account.from_key(private_key)
-    w3 = Web3(Web3.HTTPProvider(f'https://rpc-mainnet.maticvigil.com/v1/{vigil_key}'))
+    w3 = Web3(Web3.HTTPProvider(rpc_uri))
 
     w3.eth.default_account = acct.address
     w3.middleware_onion.inject(geth_poa_middleware, layer=0)

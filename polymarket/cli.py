@@ -88,7 +88,8 @@ def main():
         trx_hash = merge(w3, condition_id, num_outcomes, amount)
 
     elif args.subparser_name == 'positions':
-        list_positions(w3.eth.default_account)
+        # list_positions_from_chain(w3, w3.eth.default_account)
+        list_positions(w3, w3.eth.default_account)
         trx_hash = None
 
     if trx_hash:
