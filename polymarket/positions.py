@@ -27,12 +27,14 @@ def get_positions(user):
 
     return client.execute(query, {"user": user.lower()})
 
+
 def calc_price(pool_balances):
     product = reduce(lambda a, b: a*b, pool_balances)
     denominator = reduce(lambda a, b: a+b, map(lambda h: product / h, pool_balances))
     prices = map(lambda h: (product / h) / denominator, pool_balances)
 
     return list(prices)
+
 
 def get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes):
     conditional_token_abi = load_evm_abi('ConditionalTokens.json')
