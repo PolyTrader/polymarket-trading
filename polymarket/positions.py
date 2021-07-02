@@ -76,11 +76,12 @@ def list_positions(web3_provider, user):
             positions[mkt_id]['positions'] = [None] * len(mkts[mkt_id]['outcomes'])
 
         outcome_label = mkts[mkt_id]['outcomes'][int(pos['outcomeIndex'])]
-        # outcome_price = mkts[mkt_id]['outcomePrices'][int(pos['outcomeIndex'])]
+
         condition_id = mkts[mkt_id]['conditionId']
         num_outcomes = len(mkts[mkt_id]['outcomes'])
         outcome_prices = get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes)
         outcome_price = outcome_prices[int(pos['outcomeIndex'])]
+
         positions[mkt_id]['positions'][int(pos['outcomeIndex'])] = (outcome_label, pos['netQuantity'], outcome_price,
                                                                     pos['netValue'])
 
