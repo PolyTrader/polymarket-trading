@@ -72,6 +72,7 @@ def main():
     gas_price = getattr(args, 'g', None)
     w3 = initialize_identity(gas_price)
 
+    trx_hash = None
     if args.subparser_name == 'buy':
         trx_hash = buy(w3, market, amount, index, slip_shares)
 
@@ -88,7 +89,6 @@ def main():
         trx_hash = merge(w3, condition_id, num_outcomes, amount)
 
     elif args.subparser_name == 'positions':
-        # list_positions_from_chain(w3, w3.eth.default_account)
         list_positions(w3, w3.eth.default_account)
         trx_hash = None
 
