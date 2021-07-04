@@ -3,6 +3,20 @@ from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
 from .markets import get_active_markets
+from .utils import conditional_token_address, load_evm_abi, usdc_address
+
+parent_collection_id = '0x0000000000000000000000000000000000000000000000000000000000000000'
+
+
+def reduce(function, iterable, initializer=None):
+    it = iter(iterable)
+    if initializer is None:
+        value = next(it)
+    else:
+        value = initializer
+    for element in it:
+        value = function(value, element)
+    return value
 
 
 def get_positions(user):
@@ -14,7 +28,32 @@ def get_positions(user):
     return client.execute(query, {"user": user.lower()})
 
 
-def list_positions(user):
+def calc_price(pool_balances):
+    product = reduce(lambda a, b: a*b, pool_balances)
+    denominator = reduce(lambda a, b: a+b, map(lambda h: product / h, pool_balances))
+    prices = map(lambda h: (product / h) / denominator, pool_balances)
+
+    return list(prices)
+
+
+def get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes):
+    conditional_token_abi = load_evm_abi('ConditionalTokens.json')
+    contract = web3_provider.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
+    checked_mkt_id = web3_provider.toChecksumAddress(mkt_id)
+
+    pool_balances = []
+    for idx in range(num_outcomes):
+        val = contract.functions.getCollectionId(parent_collection_id, condition_id, 0x1 << idx).call()
+
+        position_id = contract.functions.getPositionId(usdc_address, val).call()
+
+        balance = contract.functions.balanceOf(checked_mkt_id, position_id).call()
+        pool_balances.append(balance)
+
+    return calc_price(pool_balances)
+
+
+def list_positions(web3_provider, user):
     markets = get_active_markets()
     mkt_pos = get_positions(user)
 
@@ -37,7 +76,12 @@ def list_positions(user):
             positions[mkt_id]['positions'] = [None] * len(mkts[mkt_id]['outcomes'])
 
         outcome_label = mkts[mkt_id]['outcomes'][int(pos['outcomeIndex'])]
-        outcome_price = mkts[mkt_id]['outcomePrices'][int(pos['outcomeIndex'])]
+
+        condition_id = mkts[mkt_id]['conditionId']
+        num_outcomes = len(mkts[mkt_id]['outcomes'])
+        outcome_prices = get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes)
+        outcome_price = outcome_prices[int(pos['outcomeIndex'])]
+
         positions[mkt_id]['positions'][int(pos['outcomeIndex'])] = (outcome_label, pos['netQuantity'], outcome_price,
                                                                     pos['netValue'])
 
@@ -53,6 +97,6 @@ def list_positions(user):
                 position_name = z[0]
                 num_shares = int(z[1])/10**6
                 share_price = float(z[2])
-                position_value = int(z[3])/10**6
+                position_value = num_shares * share_price
 
                 print(f"    {position_name} / {num_shares:.6f} / {share_price:.4f} / ${position_value:.4f}")

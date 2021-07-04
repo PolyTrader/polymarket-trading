@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-python@v1
-      - uses: whynothugo/python-linting@master
+      - uses: py-actions/flake8@v1
