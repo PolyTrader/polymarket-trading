@@ -8,7 +8,7 @@ jobs:
     name: Test All
     steps:
       - name: Install Ganache
-        run: npm install -g ganache-cli
+        run: sudo npm install -g ganache-cli
       - name: Start Ganache
         run: ganache-cli --fork https://rpc-mainnet.maticvigil.com &
       - name: What next?
