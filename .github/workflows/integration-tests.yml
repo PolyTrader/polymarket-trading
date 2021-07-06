@@ -10,7 +10,7 @@ jobs:
       - name: Install Ganache
         run: sudo npm install -g ganache-cli
       - name: Start Ganache
-        run: ganache-cli --fork https://rpc-mainnet.maticvigil.com &
+        run: ganache-cli --fork https://rpc-mainnet.maticvigil.com > /dev/null &
       - name: What next?
         run: sleep 5
 
