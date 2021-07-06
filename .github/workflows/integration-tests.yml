@@ -1,0 +1,16 @@
+name: Run Integration Tests
+
+on: [push]
+
+jobs:
+  test_all:
+    runs-on: ubuntu-18.04
+    name: Test All
+    steps:
+      - name: Install Ganache
+        run: npm install -g ganache-cli
+      - name: Start Ganache
+        run: ganache-cli --fork https://rpc-mainnet.maticvigil.com &
+      - name: What next?
+        run: sleep 5
+
