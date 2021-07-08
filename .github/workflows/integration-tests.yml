@@ -26,7 +26,6 @@ jobs:
           RPC_URI: http://localhost:8545
           POLYGON_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
         run: |
-          export
           cd ${GITHUB_WORKSPACE}
-          ls -la
+          pip install -r requirements.txt
           python -mtests.test_swap
