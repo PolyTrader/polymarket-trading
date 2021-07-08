@@ -18,5 +18,6 @@ jobs:
       - name: What next?
         run: sleep 2
       - name: run test
-        run: python -mtests.test_swap.py
-
+        run: |
+          cd polymarket-trading
+          python -mtests.test_swap.py
