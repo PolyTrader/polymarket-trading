@@ -19,5 +19,5 @@ jobs:
         run: sleep 2
       - name: run test
         run: |
-          cd ${GITHUB_WORKSPACE}/polymarket-trading
+          cd ${GITHUB_WORKSPACE}
           python -mtests.test_swap.py
