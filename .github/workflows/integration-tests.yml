@@ -20,4 +20,5 @@ jobs:
       - name: run test
         run: |
           cd ${GITHUB_WORKSPACE}
+          ls -la
           python -mtests.test_swap.py
