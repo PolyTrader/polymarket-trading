@@ -10,7 +10,12 @@ jobs:
       - name: Install Ganache
         run: sudo npm install -g ganache-cli
       - name: Start Ganache
-        run: ganache-cli --fork https://rpc-mainnet.maticvigil.com > /dev/null &
+        run: >
+          ganache-cli --fork https://rpc-mainnet.maticvigil.com
+          --fork https://rpc-mainnet.matic.network
+          --account="${{ secrets.WALLET_PRIVATE_KEY }},1000000000000000000000" > /dev/null &
       - name: What next?
-        run: sleep 5
+        run: sleep 2
+      - name: run test
+        run: python tests/test_swap.py
 
