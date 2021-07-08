@@ -7,11 +7,12 @@ jobs:
     runs-on: ubuntu-18.04
     name: Test All
     steps:
+      - uses: actions/checkout@master
       - name: Install Ganache
         run: sudo npm install -g ganache-cli
       - name: Start Ganache
         run: >
-          ganache-cli --fork https://rpc-mainnet.maticvigil.com
+          ganache-cli
           --fork https://rpc-mainnet.matic.network
           --account="${{ secrets.WALLET_PRIVATE_KEY }},1000000000000000000000" > /dev/null &
       - name: What next?
