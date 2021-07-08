@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-18.04
     name: Test All
     steps:
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
       - uses: actions/checkout@master
       - name: Install Ganache
         run: sudo npm install -g ganache-cli
