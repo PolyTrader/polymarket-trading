@@ -25,7 +25,7 @@ def load_contract(w3, address, file_name):
 def web3():
     w3 = polymarket.initialize_identity()
 
-    quickswap = load_contract(w3, quickswap_address, 'tests/router.json')
+    quickswap = load_contract(w3, quickswap_address, 'tests/router02.json')
     wmatic = load_contract(w3, wmatic_address, 'tests/weth9.json')
     # usdc = load_contract(w3, usdc_address, 'polymarket/abi/ERC20.json')
 
