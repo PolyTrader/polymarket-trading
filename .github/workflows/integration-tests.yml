@@ -1,6 +1,6 @@
 name: Run Integration Tests
 
-on: [pull]
+on: [pull_request]
 
 jobs:
   test_all:
