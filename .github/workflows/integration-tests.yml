@@ -27,5 +27,5 @@ jobs:
           POLYGON_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
         run: |
           cd ${GITHUB_WORKSPACE}
-          pip install -r requirements.txt
-          python -mtests.test_swap
+          pip install -r dev_requirements.txt
+          python -mpytest -v tests
