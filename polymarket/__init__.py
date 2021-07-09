@@ -1,7 +1,7 @@
 from .buy import buy
 from .markets import get_active_markets
-from .positions import get_positions, list_positions
 from .merge import merge
+from .positions import get_positions, list_positions
 from .redeem import redeem
 from .sell import sell
 from .split import split

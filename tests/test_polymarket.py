@@ -1,8 +1,7 @@
 import json
-import pytest
 
 import polymarket
-
+import pytest
 
 quickswap_address = "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"
 wmatic_address = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270'
@@ -28,7 +27,7 @@ def web3():
 
     quickswap = load_contract(w3, quickswap_address, 'tests/router.json')
     wmatic = load_contract(w3, wmatic_address, 'tests/weth9.json')
-    usdc = load_contract(w3, usdc_address, 'polymarket/abi/ERC20.json')
+    # usdc = load_contract(w3, usdc_address, 'polymarket/abi/ERC20.json')
 
     balance = w3.eth.get_balance(w3.eth.default_account)
     deposit_amount = int(0.1 * balance)
