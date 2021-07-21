@@ -2,7 +2,8 @@
 Simple cli tool for trading on PolyMarket
 
 ### Installation on Windows
- - Install [Python](https://www.microsoft.com/en-us/p/python-39/9p7qfqmjrfp7?activetab=pivot:overviewtab)
+ - Install [Python](https://www.microsoft.com/en-us/p/python-39/9p7qfqmjrfp7?activetab=pivot:overviewtab) from Microsoft
+   * or download the [Python installer](https://www.python.org/ftp/python/3.9.6/python-3.9.6-amd64.exe) directly 
  - Install [Visual Studio](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&rel=16) C++ Build Tools
  - Open a terminal  
  - Run `pip install polymarket-trading`
@@ -10,10 +11,10 @@ Simple cli tool for trading on PolyMarket
 
 ### Trading Setup
  - Create a new wallet on the matic chain
- - Create your matic endpoint on https://rpc.maticvigil.com/
+ - Create your matic RPC endpoint on https://rpc.maticvigil.com/ (or other RPC provider)
  - Set env variables
    - POLYGON_PRIVATE_KEY
-   - MATIC_VIGIL_RPC_KEY
+   - MATIC_VIGIL_RPC_KEY or RPC_URI
  - Fund your trading wallet with matic and usdc
 
 #### Made some money from this tool and want to contribute? Donate to these charities.
