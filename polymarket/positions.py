@@ -82,15 +82,16 @@ def list_positions(web3_provider, user):
         outcome_prices = get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes)
         outcome_price = outcome_prices[int(pos['outcomeIndex'])]
 
+        positions[mkt_id]['condition_id'] = condition_id
         positions[mkt_id]['positions'][int(pos['outcomeIndex'])] = (outcome_label, pos['netQuantity'], outcome_price,
                                                                     pos['netValue'])
 
     print("-"*80)
-    print("Question")
-    print("    position / number shares / share price / position value ")
+    print("Question (condition id)")
+    print("    position / number shares / share price / position value / condition id")
     for _, v in positions.items():
         print("-" * 80)
-        print(v['question'])
+        print(f"{v['question']} ({v['condition_id']})")
 
         for z in v['positions']:
             if z is not None:
@@ -99,4 +100,4 @@ def list_positions(web3_provider, user):
                 share_price = float(z[2])
                 position_value = num_shares * share_price
 
-                print(f"    {position_name} / {num_shares:.6f} / {share_price:.4f} / ${position_value:.4f}")
+                print(f"    {position_name} / {num_shares:.6f} / {share_price:.4f} / ${position_value:.4f} ")
