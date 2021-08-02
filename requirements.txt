@@ -3,3 +3,4 @@ importlib_resources
 eth_account
 requests
 gql
+mpmath
