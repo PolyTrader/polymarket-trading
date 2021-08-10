@@ -54,7 +54,7 @@ def test_sell(web3):
 
 
 def test_sell_shares(web3):
-    trx = polymarket.sell_shares(web3, slug, "Yes", 2)
+    trx = polymarket.sell_shares(web3, slug, "Yes", 0.1, 2)
     assert trx is not None
 
 
