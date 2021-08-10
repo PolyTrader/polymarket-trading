@@ -11,7 +11,6 @@ from .sell import sell, sell_shares
 from .split import split
 from .utils import initialize_identity
 
-import cProfile
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +52,7 @@ def main():
     sell_shares_parser.add_argument('-n', help='Number of shares to sell', type=float, required=True)
     sell_shares_parser.add_argument('-l', help='Slippage (0-100)', type=int, required=False, default=2)
 
-    positions_parser = sub_parser.add_parser('positions', help='List Open Positions')
+    sub_parser.add_parser('positions', help='List Open Positions')
 
     args = parser.parse_args()
 

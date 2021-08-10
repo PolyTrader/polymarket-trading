@@ -1,27 +1,6 @@
 from mpmath import mp
 from pydash import _
 
-from ..utils import conditional_token_address, load_evm_abi, usdc_address
-
-parent_collection_id = '0x0000000000000000000000000000000000000000000000000000000000000000'
-
-
-def get_pool_balances(web3_provider, mkt_id, condition_id, num_outcomes):
-    conditional_token_abi = load_evm_abi('ConditionalTokens.json')
-    contract = web3_provider.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
-    checked_mkt_id = web3_provider.toChecksumAddress(mkt_id)
-
-    pool_balances = []
-    for idx in range(num_outcomes):
-        val = contract.functions.getCollectionId(parent_collection_id, condition_id, 0x1 << idx).call()
-
-        position_id = contract.functions.getPositionId(usdc_address, val).call()
-
-        balance = contract.functions.balanceOf(checked_mkt_id, position_id).call()
-        pool_balances.append(balance)
-
-    return pool_balances
-
 
 def calc_sell_amount_in_collateral(shares_to_sell, outcome_index, pool_balances, fee):
     mp.dps = 90
@@ -45,11 +24,7 @@ def calc_sell_amount_in_collateral(shares_to_sell, outcome_index, pool_balances,
 
     try:
         r = mp.findroot(func, 0, maxsteps=100)
-    except Exception as e:
+    except Exception:
         r = None
 
     return r
-
-
-
-

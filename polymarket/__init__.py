@@ -6,7 +6,6 @@ from .redeem import redeem
 from .sell import sell, sell_shares
 from .split import split
 from .utils import initialize_identity, load_evm_abi
-from .amm import *
 
 
 __all__ = ['abi', 'gql', 'buy', 'merge', 'sell', 'sell_shares', 'split', 'redeem', 'utils', 'initialize_identity',

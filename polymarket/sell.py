@@ -1,6 +1,7 @@
-from .utils import conditional_token_approve_for_all, load_evm_abi
-from .amm import calc_sell_amount_in_collateral, get_pool_balances
+from .amm import calc_sell_amount_in_collateral
 from .markets import get_active_markets
+from .utils import conditional_token_approve_for_all, get_pool_balances, load_evm_abi
+
 
 def sell(web3_provider, market_maker_address, return_amount, index, maximum_shares):
     fixed_product_market_maker_address_abi = load_evm_abi('FixedProductMarketMaker.json')

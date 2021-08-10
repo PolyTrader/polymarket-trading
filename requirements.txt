@@ -4,3 +4,4 @@ eth_account
 requests
 gql
 mpmath
+pydash

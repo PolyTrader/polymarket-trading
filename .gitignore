@@ -130,3 +130,6 @@ dmypy.json
 
 # PyCharm IDE settings
 .idea/
+
+# local stats tester
+stats.py
