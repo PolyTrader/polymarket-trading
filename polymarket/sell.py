@@ -1,4 +1,4 @@
-from .amm import calc_sell_amount_in_collateral
+from .amm.maths import calc_sell_amount_in_collateral
 from .markets import get_active_markets
 from .utils import conditional_token_approve_for_all, get_pool_balances, load_evm_abi
 
