@@ -10,6 +10,7 @@ from web3.middleware import construct_sign_and_send_raw_middleware, geth_poa_mid
 
 conditional_token_address = '0x4D97DCd97eC945f40cF65F87097ACe5EA0476045'
 usdc_address = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
+parent_collection_id = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
 
 @lru_cache(maxsize=16)
@@ -78,3 +79,20 @@ def initialize_identity(gas_price=None):
         w3.eth.set_gas_price_strategy(rpc.rpc_gas_price_strategy)
 
     return w3
+
+
+def get_pool_balances(web3_provider, mkt_id, condition_id, num_outcomes):
+    conditional_token_abi = load_evm_abi('ConditionalTokens.json')
+    contract = web3_provider.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
+    checked_mkt_id = web3_provider.toChecksumAddress(mkt_id)
+
+    pool_balances = []
+    for idx in range(num_outcomes):
+        val = contract.functions.getCollectionId(parent_collection_id, condition_id, 0x1 << idx).call()
+
+        position_id = contract.functions.getPositionId(usdc_address, val).call()
+
+        balance = contract.functions.balanceOf(checked_mkt_id, position_id).call()
+        pool_balances.append(balance)
+
+    return pool_balances

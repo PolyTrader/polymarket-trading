@@ -12,6 +12,7 @@ decimals = 18
 # Will the Ever Given exit the Great Bitter Lake in the Suez Canal by July 25?
 condition_id = "0x2a2245d9db4616bd30240e64b424e2184d7fb9ee222d72d92313e5fb962ef0fb"
 market_address = "0xe25fC2fAA77Cb4EC7312466fCC104EDB02596831"
+slug = "will-the-ever-given-exit-the-great-bitter-lake-in-the-suez-canal-by-july-25"
 
 
 def load_contract(w3, address, file_name):
@@ -49,6 +50,11 @@ def test_buy(web3):
 
 def test_sell(web3):
     trx = polymarket.sell(web3, market_address, 0.1, 0, 1)
+    assert trx is not None
+
+
+def test_sell_shares(web3):
+    trx = polymarket.sell_shares(web3, slug, "Yes", 0.1, 2)
     assert trx is not None
 
 

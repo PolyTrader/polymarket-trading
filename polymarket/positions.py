@@ -3,7 +3,7 @@ from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
 
 from .markets import get_active_markets
-from .utils import conditional_token_address, load_evm_abi, usdc_address
+from .utils import get_pool_balances
 
 parent_collection_id = '0x0000000000000000000000000000000000000000000000000000000000000000'
 
@@ -37,19 +37,7 @@ def calc_price(pool_balances):
 
 
 def get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes):
-    conditional_token_abi = load_evm_abi('ConditionalTokens.json')
-    contract = web3_provider.eth.contract(address=conditional_token_address, abi=conditional_token_abi)
-    checked_mkt_id = web3_provider.toChecksumAddress(mkt_id)
-
-    pool_balances = []
-    for idx in range(num_outcomes):
-        val = contract.functions.getCollectionId(parent_collection_id, condition_id, 0x1 << idx).call()
-
-        position_id = contract.functions.getPositionId(usdc_address, val).call()
-
-        balance = contract.functions.balanceOf(checked_mkt_id, position_id).call()
-        pool_balances.append(balance)
-
+    pool_balances = get_pool_balances(web3_provider, mkt_id, condition_id, num_outcomes)
     return calc_price(pool_balances)
 
 
