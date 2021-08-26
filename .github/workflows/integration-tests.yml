@@ -17,7 +17,7 @@ jobs:
       - name: Start Ganache
         run: >
           ganache-cli
-          --fork https://matic-mainnet-archive-rpc.bwarelabs.com
+          --fork https://matic-mainnet-rpc.bwarelabs.com
           --account="${{ secrets.WALLET_PRIVATE_KEY }},1000000000000000000000" &
       - name: Wait for Ganache to finish starting
         run: sleep 2
