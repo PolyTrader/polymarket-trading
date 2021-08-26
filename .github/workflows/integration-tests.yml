@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@master
       - run: nvm use 12
       - name: Install Ganache
-        run: sudo npm install ganache --global
+        run: sudo npm install ganache-core ganache-cli --global
       - name: Start Ganache
         run: >
           ganache
