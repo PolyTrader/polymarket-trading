@@ -13,10 +13,10 @@ jobs:
           python-version: 3.7
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '12'
       - uses: actions/checkout@master
       - name: Install Ganache
-        run: sudo npm install -g ganache-cli
+        run: sudo npm install -g ganache ganache-cli
       - name: Start Ganache
         run: >
           ganache-cli
