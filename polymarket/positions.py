@@ -93,21 +93,22 @@ def get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes):
 
 def load_cached_market_data(data=None):
     global cached_market_data
+    cached_data = []
+
     if cached_market_data is not None:
-        return cached_market_data
+        cached_data = cached_market_data
 
-    if data is not None:
+    elif data is not None:
         cached_market_data = data
-        return cached_market_data
+        cached_data = cached_market_data
 
-    mapped_data = {}
-    try:
-        cached_data = json.load(open("market_data.json"))
-        mapped_data = {mkt["id"]: mkt for mkt in cached_data}
-    except Exception:
-        pass
+    else:
+        try:
+            cached_data = json.load(open("market_data.json"))
+        except Exception:
+            pass
 
-    return mapped_data
+    return {mkt["id"]: mkt for mkt in cached_data}
 
 
 def get_all_balances(web3_provider, wallet, markets):
