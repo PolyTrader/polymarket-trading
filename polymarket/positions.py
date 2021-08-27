@@ -93,7 +93,7 @@ def get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes):
 
 def load_cached_market_data(data=None):
     global cached_market_data
-    cached_data = []
+    cached_data = {}
 
     if cached_market_data is not None:
         cached_data = cached_market_data
