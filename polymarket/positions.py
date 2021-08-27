@@ -146,7 +146,7 @@ def get_all_balances(web3_provider, wallet, markets):
     token_balance = build_token_balance_dict(balances, token_query_list)
     token_prices = build_token_price_dict(web3_provider, token_balance, token_markets)
 
-    print_table_header()
+    out_str = print_table_header()
     for mkt in markets:
         print_market = False
 
@@ -155,33 +155,35 @@ def get_all_balances(web3_provider, wallet, markets):
                 print_market = True
 
         if print_market:
-            print_position_header(mkt['question'], mkt['conditionId'])
+            out_str += print_position_header(mkt['question'], mkt['conditionId'])
 
             for idx in range(len(mkt['outcome_tokens'])):
                 tkn = mkt['outcome_tokens'][idx]
                 if token_balance[tkn]:
-                    print_position(mkt['outcomes'][idx], token_balance[tkn], token_prices[tkn])
+                    out_str += print_position(mkt['outcomes'][idx], token_balance[tkn], token_prices[tkn])
+
+    return out_str
 
 
 def list_positions(web3_provider, user):
     markets = get_active_markets()
-    get_all_balances(web3_provider, user, markets)
+    return get_all_balances(web3_provider, user, markets)
 
 
 def print_table_header():
-    print("-"*80)
-    print("Question (condition id)")
-    print("    position / number shares / share price / position value / condition id")
-
+    out = "-"*80
+    out += "\nQuestion (condition id)\n"
+    out += "    position / number shares / share price / position value / condition id\n"
+    return out
 
 def print_position_header(question, condition_id):
-    print("-" * 80)
-    print(f"{question} ({condition_id})")
-
+    out = "-" * 80
+    out += f"\n{question} ({condition_id})\n"
+    return out
 
 def print_position(position_name, num_shares, share_price):
     ONE = 10 ** 6
     num_shares = num_shares / ONE
     position_value = num_shares * share_price
 
-    print(f"    {position_name} / {num_shares:.6f} / {share_price:.4f} / ${position_value:.4f} ")
+    return f"    {position_name} / {num_shares:.6f} / {share_price:.4f} / ${position_value:.4f} \n"

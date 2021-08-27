@@ -108,7 +108,7 @@ def main():
         trx_hash = sell_shares(w3, market_slug, outcome, num_shares, slippage)
 
     elif args.subparser_name == 'positions':
-        list_positions(w3, w3.eth.default_account)
+        print(list_positions(w3, w3.eth.default_account))
         trx_hash = None
 
     if trx_hash:
