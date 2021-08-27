@@ -9,6 +9,7 @@ from .utils import conditional_token_address, get_pool_balances, load_evm_abi, u
 
 
 parent_collection_id = '0x0000000000000000000000000000000000000000000000000000000000000000'
+cached_market_data = None
 
 
 def chunks(lst, n):
@@ -90,7 +91,15 @@ def get_chain_price(web3_provider, mkt_id, condition_id, num_outcomes):
     return prices
 
 
-def load_cached_market_data():
+def load_cached_market_data(data=None):
+    global cached_market_data
+    if cached_market_data is not None:
+        return cached_market_data
+
+    if data is not None:
+        cached_market_data = data
+        return cached_market_data
+
     mapped_data = {}
     try:
         cached_data = json.load(open("market_data.json"))
