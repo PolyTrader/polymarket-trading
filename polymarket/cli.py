@@ -10,7 +10,7 @@ from .redeem import redeem
 from .sell import sell, sell_shares
 from .split import split
 from .utils import initialize_identity
-
+from .transfer import transfer
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +45,12 @@ def main():
     merge_parser.add_argument('-c', help='Condition ID to redeem', required=True)
     merge_parser.add_argument('-n', help='Number of outcomes', type=int, required=True)
     merge_parser.add_argument('-a', help='Amount of collateral to merge', type=float, required=True)
+
+    transfer_parser = sub_parser.add_parser('transfer', help='Transfer Shares')
+    transfer_parser.add_argument('-c', help='Condition ID to transfer', required=True)
+    transfer_parser.add_argument('-i', help="Index of outcome choice", type=int, required=True)
+    transfer_parser.add_argument('-a', help='Amount of shares to transfer', type=float, required=True)
+    transfer_parser.add_argument('-d', help='Destination to send to', required=True)
 
     sell_shares_parser = sub_parser.add_parser('sell_shares', help='Sell shares by amount')
     sell_shares_parser.add_argument('-s', help='Market slug', required=True)
@@ -85,6 +91,16 @@ def main():
             logger.error(e)
             exit()
 
+    elif args.subparser_name in ['transfer']:
+        try:
+            condition_id = args.c
+            index = args.i
+            amount = args.a
+            toAddress = args.d
+        except AttributeError as e:
+            logger.error(e)
+            exit()
+
     gas_price = getattr(args, 'g', None)
     w3 = initialize_identity(gas_price)
 
@@ -106,6 +122,9 @@ def main():
 
     elif args.subparser_name == "sell_shares":
         trx_hash = sell_shares(w3, market_slug, outcome, num_shares, slippage)
+
+    elif args.subparser_name == 'transfer':
+        trx_hash = transfer(w3, condition_id, index, amount, toAddress)
 
     elif args.subparser_name == 'positions':
         list_positions(w3, w3.eth.default_account)
