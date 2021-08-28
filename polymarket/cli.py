@@ -4,6 +4,7 @@ import logging
 from web3 import Web3
 
 from .buy import buy
+from .liquidity import add_liquidity, liquidity_balance, liquidity_withdraw_fees, remove_liquidity
 from .merge import merge
 from .positions import list_positions
 from .redeem import redeem
@@ -52,6 +53,24 @@ def main():
     sell_shares_parser.add_argument('-n', help='Number of shares to sell', type=float, required=True)
     sell_shares_parser.add_argument('-l', help='Slippage (0-100)', type=int, required=False, default=2)
 
+    add_liquidity_parser = sub_parser.add_parser('add_liquidity', help="Add liquidity to market")
+    add_liquidity_parser.add_argument('-m', help="Market Maker Address", required=False)
+    add_liquidity_parser.add_argument('-s', help="Market slug", required=False)
+    add_liquidity_parser.add_argument('-a', help="Amount to add", type=float, required=True)
+    
+    remove_liquidity_parser = sub_parser.add_parser('remove_liquidity', help="Remove liquidity from a market")
+    remove_liquidity_parser.add_argument('-m', help="Market Maker Address", required=False)
+    remove_liquidity_parser.add_argument('-s', help="Market slug", required=False)
+    remove_liquidity_parser.add_argument('-a', help="Shares to burn", type=float, required=True)
+
+    liquidity_balance_parser = sub_parser.add_parser('liquidity_balance', help="Liquidity tokens in a market.")
+    liquidity_balance_parser.add_argument('-m', help="Market Maker Address", required=False)
+    liquidity_balance_parser.add_argument('-s', help="Market slug", required=False)
+
+    liquidity_balance_parser = sub_parser.add_parser('liquidity_withdraw_fees', help="Withdraw liquidity fees")
+    liquidity_balance_parser.add_argument('-m', help="Market Maker Address", required=False)
+    liquidity_balance_parser.add_argument('-s', help="Market slug", required=False)
+
     sub_parser.add_parser('positions', help='List Open Positions')
 
     args = parser.parse_args()
@@ -85,6 +104,23 @@ def main():
             logger.error(e)
             exit()
 
+    elif args.subparser_name in ['add_liquidity', 'remove_liquidity']:
+        try:
+            market = args.m
+            slug = args.s
+            amount = args.a
+        except AttributeError as e:
+            logger.error(e)
+            exit()
+
+    elif args.subparser_name in ['liquidity_balance', 'liquidity_withdraw_fees']:
+        try:
+            market = args.m
+            slug = args.s
+        except AttributeError as e:
+            logger.error(e)
+            exit()
+
     gas_price = getattr(args, 'g', None)
     w3 = initialize_identity(gas_price)
 
@@ -107,9 +143,20 @@ def main():
     elif args.subparser_name == "sell_shares":
         trx_hash = sell_shares(w3, market_slug, outcome, num_shares, slippage)
 
+    elif args.subparser_name == "add_liquidity":
+        trx_hash = add_liquidity(w3, slug, market, amount)
+
+    elif args.subparser_name == "liquidity_balance":
+        liquidity_balance(w3, slug, market)
+
+    elif args.subparser_name == "liquidity_withdraw_fees":
+        trx_hash = liquidity_withdraw_fees(w3, slug, market)
+        
+    elif args.subparser_name == "remove_liquidity":
+        trx_hash = remove_liquidity(w3, slug, market, amount)
+
     elif args.subparser_name == 'positions':
         list_positions(w3, w3.eth.default_account)
-        trx_hash = None
 
     if trx_hash:
         print(Web3.toHex(trx_hash))
