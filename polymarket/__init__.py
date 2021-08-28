@@ -11,4 +11,4 @@ from .utils import initialize_identity, load_evm_abi
 
 __all__ = ['abi', 'gql', 'buy', 'merge', 'sell', 'sell_shares', 'split', 'redeem', 'utils', 'initialize_identity',
            'load_evm_abi', 'get_positions', 'list_positions', 'get_active_markets', 'remove_liquidity',
-           'liquidity_balance', 'liquidity_withdraw_fees']
+           'liquidity_balance', 'liquidity_withdraw_fees', 'add_liquidity']
