@@ -66,4 +66,3 @@ def liquidity_withdraw_fees(web3_provider, slug=None, market_maker_address=None)
     trx_hash = contract.functions.withdrawFees(web3_provider.eth.default_account).transact()
     web3_provider.eth.wait_for_transaction_receipt(trx_hash)
     return trx_hash
-

@@ -57,7 +57,7 @@ def main():
     add_liquidity_parser.add_argument('-m', help="Market Maker Address", required=False)
     add_liquidity_parser.add_argument('-s', help="Market slug", required=False)
     add_liquidity_parser.add_argument('-a', help="Amount to add", type=float, required=True)
-    
+
     remove_liquidity_parser = sub_parser.add_parser('remove_liquidity', help="Remove liquidity from a market")
     remove_liquidity_parser.add_argument('-m', help="Market Maker Address", required=False)
     remove_liquidity_parser.add_argument('-s', help="Market slug", required=False)
@@ -151,7 +151,7 @@ def main():
 
     elif args.subparser_name == "liquidity_withdraw_fees":
         trx_hash = liquidity_withdraw_fees(w3, slug, market)
-        
+
     elif args.subparser_name == "remove_liquidity":
         trx_hash = remove_liquidity(w3, slug, market, amount)
 
