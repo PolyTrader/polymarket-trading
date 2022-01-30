@@ -16,11 +16,11 @@ jobs:
           node-version: '12'
       - uses: actions/checkout@master
       - name: Install Ganache
-        run: sudo npm install ganache@alpha --global
+        run: sudo npm install ganache --global
       - name: Start Ganache
         run: >
           ganache
-          --fork https://matic-mainnet-archive-rpc.bwarelabs.com
+          --fork https://polygon-rpc.com
           --account="${{ secrets.WALLET_PRIVATE_KEY }},1000000000000000000000" &
       - name: Wait for Ganache to finish starting
         run: sleep 10
